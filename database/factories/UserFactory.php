@@ -1,0 +1,34 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+
+class UserFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $users = User::whereNull('npp_supervisor')->pluck('npp')->toArray();
+        return [
+            'nama' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'npp' => rand(1000,9999),
+            'npp_supervisor' => $this->faker->randomElement($users),
+            'password' => Hash::make('1111'),
+        ];
+    }
+}
