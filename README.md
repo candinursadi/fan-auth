@@ -1,24 +1,96 @@
-# Lumen PHP Framework
+### First Step
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/lumen)](https://packagist.org/packages/laravel/lumen-framework)
+Follow this commands:
+Migrate the tables
+``` 
+php artisan migrate
+``` 
+Insert the seeds
+```
+php artisan db:seed
+```
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+### Login to get Access Token
 
-## Official Documentation
+| Service Name  | Endpoint |
+| ------------- | ------------- |
+| login | {{baseUrl}}/login  |
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+**Request (POST) :**
+``` 
+{
+    "email" : "xskiles@example.net",
+    "password" : "1111"
+}
+```
 
-## Contributing
+**Response Success :**
+``` 
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywibmFtYSI6Ikx1Y3kgU3Ryb21hbiIsImVtYWlsIjoieHNraWxlc0BleGFtcGxlLm5ldCIsIm5wcCI6IjcxNzUiLCJucHBfc3VwZXJ2aXNvciI6IjI5MTIiLCJleHAiOjE2NzA0NDIwNzN9.f901cVWINPVPqzqFksQA_TOS8GTCHta_wQCNYYvgUzY",
+    "token_type": "bearer"
+}
+```
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Check In/Out Presence
 
-## Security Vulnerabilities
+| Service Name  | Endpoint |
+| ------------- | ------------- |
+| check-in-out | {{baseUrl}}/api/presence  |
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+**Request (POST) :**
+``` 
+Authorization: Bearer {access_token}
+Content-Type: application/json
 
-## License
+{
+    "type" : "IN",
+    "waktu" : "2022-12-07 08:35:00"
+}
+```
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Response Success :**
+``` 
+{
+    "message": "Success"
+}
+```
+
+### Get User
+
+| Service Name  | Endpoint |
+| ------------- | ------------- |
+| get-user | {{baseUrl}}/api/user  |
+
+**Request (GET) :**
+``` 
+GET /api/user?start_date=2022-12-07&end_date=2022-12-08&page=1&per_page=2 HTTP/1.1
+Authorization: Bearer {access_token}
+```
+
+**Response Success :**
+``` 
+{
+    "message": "Success get data",
+    "data": [
+        {
+            "id_user": 3,
+            "nama_user": "Lucy Stroman",
+            "tanggal": "2022-12-07",
+            "waktu_masuk": "09:12:00",
+            "waktu_keluar": "09:15:00",
+            "status_masuk": "APPROVE",
+            "status_keluar": "REJECT"
+        },
+        {
+            "id_user": 3,
+            "nama_user": "Lucy Stroman",
+            "tanggal": "2022-12-08",
+            "waktu_masuk": "09:15:00",
+            "waktu_keluar": "09:35:00",
+            "status_masuk": "REJECT",
+            "status_keluar": "APPROVE"
+        }
+    ]
+}
+```
